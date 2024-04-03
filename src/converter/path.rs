@@ -1,11 +1,8 @@
 use crate::converter::media_content;
 use crate::converter::object::{attributes, ToReferenceOr};
 use crate::converter::response::parameter;
-use crate::converter::schema::schema_content;
-use crate::openapi::{ParameterIn, Paths, ReferenceOr};
-use parser::{
-    Operation, Parameter, ParameterType, Parameters, Path, Response, ResponseContent, SchemaContent,
-};
+use crate::openapi::{Paths, ReferenceOr};
+use parser::{Operation, ParameterType, Parameters, Path, ResponseContent};
 use std::collections::HashMap;
 
 pub(super) fn path_values(paths: Vec<Path>) -> Paths {

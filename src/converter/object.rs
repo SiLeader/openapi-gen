@@ -2,11 +2,8 @@ use crate::converter::path::path_values;
 use crate::converter::request_body::request_body;
 use crate::converter::response::response;
 use crate::converter::schema::{enum_content, schema};
-use crate::openapi::{Components, Info, OpenApi, Paths};
-use parser::{
-    Attributes, Literal, Object, Path, ReferenceOr, Requirement, Schema, SchemaContent,
-    SourceFileContent, Tag, Type, TypeWithAttributes, Value,
-};
+use crate::openapi::{Components, Info, OpenApi};
+use parser::{Attributes, Literal, Object, Path, Tag, Type, TypeWithAttributes, Value};
 use serde::Serialize;
 use std::collections::HashMap;
 use std::fmt::Debug;

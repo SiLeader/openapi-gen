@@ -1,5 +1,5 @@
 use crate::converter::object::{attributes, type_with_attributes, ToReferenceOr};
-use parser::{EnumContent, ReferenceOr, Requirement, Schema, SchemaContent, TypeWithAttributes};
+use parser::{EnumContent, ReferenceOr, Requirement, Schema, SchemaContent};
 use std::collections::HashMap;
 
 pub(super) fn schema(schema: &Schema) -> crate::openapi::ReferenceOr<crate::openapi::Schema> {

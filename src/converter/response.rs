@@ -1,10 +1,7 @@
 use crate::converter::media_content;
 use crate::converter::object::{attributes, type_with_attributes};
-use crate::converter::schema::schema;
-use crate::openapi::{MediaType, ParameterIn};
-use parser::{
-    Parameter, ParameterType, Requirement, Response, ResponseContent, TypeWithAttributes,
-};
+use crate::openapi::ParameterIn;
+use parser::{Parameter, ParameterType, Requirement, Response, ResponseContent};
 use std::collections::HashMap;
 
 pub(super) fn response(res: &Response) -> crate::openapi::Response {
