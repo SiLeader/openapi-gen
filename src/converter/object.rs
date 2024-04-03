@@ -8,17 +8,19 @@ use serde::Serialize;
 use std::collections::HashMap;
 use std::fmt::Debug;
 
-pub(crate) fn generate(objects: Vec<Object>) -> OpenApi {
-    let (components, tags, paths) = components(&objects);
+struct InfoConfig {
+    info: HashMap<String, parser::Info>,
+    default: Option<String>,
+}
+
+pub(crate) fn generate(objects: Vec<Object>, config: Option<String>) -> OpenApi {
+    let (components, tags, paths, info) = components(&objects);
 
     let paths = path_values(paths);
 
     OpenApi {
         openapi: "3.1.0".to_string(),
-        info: Info {
-            title: "".to_string(),
-            attributes: Default::default(),
-        },
+        info: resolve_info(&info, config),
         servers: vec![],
         paths,
         components,
@@ -26,10 +28,15 @@ pub(crate) fn generate(objects: Vec<Object>) -> OpenApi {
     }
 }
 
-fn components(objects: &Vec<Object>) -> (Components, Vec<crate::openapi::Tag>, Vec<Path>) {
+fn components(
+    objects: &Vec<Object>,
+) -> (Components, Vec<crate::openapi::Tag>, Vec<Path>, InfoConfig) {
     let mut cs = Components::default();
     let mut tags = Vec::new();
     let mut paths = Vec::new();
+
+    let mut info = HashMap::new();
+    let mut default_info = None;
 
     for o in objects {
         match o {
@@ -49,16 +56,63 @@ fn components(objects: &Vec<Object>) -> (Components, Vec<crate::openapi::Tag>, V
             Object::Path(p) => {
                 paths.push(p.clone());
             }
+            Object::Info(i) => {
+                if i.is_default {
+                    default_info = Some(i.config_name.to_string());
+                }
+                info.insert(i.config_name.to_string(), i.clone());
+            }
         }
     }
 
-    (cs, tags, paths)
+    (
+        cs,
+        tags,
+        paths,
+        InfoConfig {
+            info,
+            default: default_info,
+        },
+    )
 }
 
 fn tag(tag: &Tag) -> crate::openapi::Tag {
     crate::openapi::Tag {
         name: tag.name.clone(),
         attributes: attributes(&tag.attributes),
+    }
+}
+
+fn resolve_info(info_config: &InfoConfig, config: Option<String>) -> Info {
+    let config = config.or(info_config.default.clone()).unwrap();
+    let using = info_config.info.get(&config).unwrap();
+    let info = extends_info(&info_config, using.clone());
+
+    Info {
+        title: info.title.unwrap(),
+        version: info.version.unwrap(),
+        description: info.description,
+        terms_of_service: info.terms_of_service,
+    }
+}
+
+fn extends_info(info_config: &InfoConfig, info: parser::Info) -> parser::Info {
+    match info.base {
+        None => info,
+        Some(base) => {
+            let base = info_config.info.get(&base).unwrap().clone();
+            let base = extends_info(&info_config, base);
+            parser::Info {
+                is_default: true,
+                config_name: "".to_string(),
+                title: info.title.or(base.title),
+                version: info.version.or(base.version),
+                description: info.description.or(base.description),
+                terms_of_service: info.terms_of_service.or(base.terms_of_service),
+                summary: info.summary.or(base.summary),
+                base: None,
+            }
+        }
     }
 }
 

@@ -3,6 +3,15 @@ import "response.oai"
 import "schema.oai"
 import "request_body.oai"
 
+info BaseConfig {
+    description = "Base description"
+}
+
+default info DefaultConfig extends BaseConfig {
+    title = "My Sample API"
+    version = "0.1.0"
+}
+
 path "/v1/users" with tag = User {
     get getUsersList(
         queries = parameters {

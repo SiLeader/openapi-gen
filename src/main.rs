@@ -20,6 +20,9 @@ struct Args {
 
     #[arg(short, long, default_value = "openapi.yml", help = "Output file")]
     output: String,
+
+    #[arg(short, long, help = "Info config name to use instead of default info")]
+    config: Option<String>,
 }
 
 fn main() {
@@ -62,21 +65,19 @@ fn main() {
         objects
     };
 
-    let openapi = generate(objects);
+    let openapi = generate(objects, args.config);
 
     let file = File::create(args.output.as_str()).unwrap();
     serde_yaml::to_writer(file, &openapi).unwrap();
 }
 
 fn load_and_parse(file: &str) -> (String, SourceFileContent) {
-    debug!("i. {file}");
     let file = Path::new(file)
         .canonicalize()
         .unwrap()
         .to_str()
         .unwrap()
         .to_string();
-    debug!("k. {file}");
     let content = read_to_string(file.as_str()).unwrap();
     debug!(
         "load imported file: {file} ({} bytes)",

@@ -19,8 +19,11 @@ pub type Attributes = HashMap<String, serde_json::Value>;
 #[derive(Debug, Clone, Serialize)]
 pub struct Info {
     pub title: String,
-    #[serde(flatten)]
-    pub attributes: Attributes,
+    pub version: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub terms_of_service: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]

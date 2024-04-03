@@ -1,6 +1,7 @@
 use std::fmt::Debug;
 
 pub use import::*;
+pub use info::*;
 pub use parameter::*;
 pub use path::*;
 pub use request_body::*;
@@ -9,6 +10,7 @@ pub use schema::*;
 pub use tag::*;
 
 mod import;
+mod info;
 mod parameter;
 mod path;
 mod request_body;
@@ -33,6 +35,7 @@ pub enum Object {
     Path(Path),
     RequestBody(RequestBody),
     Enum(Enum),
+    Info(Info),
 }
 
 #[derive(Debug, Clone)]

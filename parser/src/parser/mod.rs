@@ -12,6 +12,7 @@ use crate::parser::object_definition::object_definition;
 mod enum_definition;
 mod identifier;
 mod import_statement;
+mod info_definition;
 mod literals;
 mod object_definition;
 mod parameter_definition;
