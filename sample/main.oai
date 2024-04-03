@@ -1,0 +1,46 @@
+import "tag.oai"
+import "response.oai"
+import "schema.oai"
+import "request_body.oai"
+
+path "/v1/users" with tag = User {
+    get getUsersList(
+        queries = parameters {
+            "sort": parameter {
+                content = enum {
+                    "Ascend",
+                    "Descend"
+                }
+            }
+        }
+    ) {
+        return 200 response {
+            content = schema{}
+        }
+        return 404 NotFound
+    }
+
+    post createUser(
+        body = CreateUserBody,
+    ) {
+        return 201 response {
+            content = User
+        }
+        return 400 MissingRequiredField
+    }
+}
+
+path "/v1/users/{userId}" with tag = User {
+    pathParameters = parameters {
+        "userId": parameter {
+            content = required String
+        }
+    }
+
+    get getUser() {
+        return 200 response {
+            content = schema{}
+        }
+        return 404 NotFound
+    }
+}

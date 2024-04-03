@@ -1,0 +1,6 @@
+requestBody CreateUserBody {
+    content = schema {
+        name: required String,
+        password: required String,
+    }
+}

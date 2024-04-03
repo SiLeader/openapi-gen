@@ -1,0 +1,22 @@
+response NotFound with description = "Not found response" {
+    headers = parameters {
+        "X-Test": parameter {
+            content = String
+        },
+        "X-Test-2": parameter {
+            content = Int
+        },
+    }
+    content = schema {
+    }
+}
+
+response MissingRequiredField {
+    content = schema {
+        code: enum {
+            Ok,
+            MissingField,
+        },
+        fields: List<String>
+    }
+}
