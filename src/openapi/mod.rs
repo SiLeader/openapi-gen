@@ -117,6 +117,7 @@ pub enum Schema {
         format: Option<String>,
 
         #[serde(rename = "enum")]
+        #[serde(skip_serializing_if = "Option::is_none")]
         selection: Option<Vec<String>>,
         #[serde(flatten)]
         attributes: Attributes,
