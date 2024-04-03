@@ -50,7 +50,7 @@ pub struct Components {
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     pub parameters: HashMap<String, Parameter>,
     #[serde(skip_serializing_if = "HashMap::is_empty")]
-    pub request_body: HashMap<String, ReferenceOr<RequestBody>>,
+    pub request_bodies: HashMap<String, ReferenceOr<RequestBody>>,
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     pub headers: HashMap<String, Parameter>,
 }

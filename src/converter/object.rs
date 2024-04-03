@@ -48,7 +48,7 @@ fn components(
                 cs.responses.insert(r.name.clone(), response(r));
             }
             Object::RequestBody(r) => {
-                cs.request_body.insert(r.name.clone(), request_body(r));
+                cs.request_bodies.insert(r.name.clone(), request_body(r));
             }
             Object::Enum(e) => {
                 cs.schemas.insert(e.name.clone(), enum_content(&e.content));
